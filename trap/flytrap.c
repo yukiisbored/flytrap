@@ -340,11 +340,19 @@ int main( int argc, char **argv )
 			fprintf(stderr,"usage: %s [-h] [-p port] [-a address]"
 				" [-l logpath] [-k keypath] [-u setuser]"
 				" [-b path to bogosh executable]\n",argv[0]);
-			return 1;
+			exit(1);
 		}
 	}
-	signal(SIGCHLD,SIG_IGN);
-	wlog("started on %s:%d with PID %d",bindaddr,bindport,getpid());
+	int dpid = fork();
+	if ( dpid < 0 )
+	{
+		fprintf(stderr,"failed to daemonize: %s\n",strerror(errno));
+		exit(1);
+	}
+	else if ( pid > 0 )
+		exit(0);
+
+	wlog("started daemon for %s:%d",bindaddr,bindport);
 	s_session = ssh_new();
 	s_bind = ssh_bind_new();
 	ssh_bind_options_set(s_bind,SSH_BIND_OPTIONS_BINDADDR,bindaddr);
@@ -353,7 +361,7 @@ int main( int argc, char **argv )
 	if ( ssh_bind_listen(s_bind) < 0 )
 	{
 		wlog("ssh bind error: %s",ssh_get_error(s_bind));
-		return 1;
+		exit(1);
 	}
 	if ( setuser ) switch_user();
 	for( ; ; )
@@ -374,5 +382,5 @@ int main( int argc, char **argv )
 			exit(trap_fly(s_session));
 		}
 	}
-	return 0;
+	exit(0);
 }
