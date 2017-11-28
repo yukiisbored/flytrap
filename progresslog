@@ -1,0 +1,18 @@
+Legend:
+- To do
+X Done
+P Partial
+F Failed
+C Currently in progress
+
+Flytrap:
+X Start Project
+X SSH server functionality
+X Privilege dropping
+
+Bogosh:
+X Start Project
+X Fake prompt skeleton
+- Pretend to actually be a shell
+  - Fake most standard shell commands
+  - Fake some files and programs

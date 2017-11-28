@@ -1,0 +1,11 @@
+#!/bin/sh
+source ./.aosbuild
+
+aos_compiler ${CC:-cc}
+aos_pkgconfig ${PKGCONF:-pkg-config}
+aos_cflags -march=native -std=c11 -Os -pipe -Wall -Wextra -Werror -pedantic
+aos_lflags $CFLAGS
+aos_bin bogosh
+aos_src bogo/*.c
+
+aos_main $@

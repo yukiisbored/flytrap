@@ -1,0 +1,12 @@
+#!/bin/sh
+source ./.aosbuild
+
+aos_compiler ${CC:-cc}
+aos_pkgconfig ${PKGCONF:-pkg-config}
+aos_cflags -march=native -std=c11 -Os -pipe -Wall -Wextra -Werror -pedantic
+aos_lflags $CFLAGS -lutil
+aos_pkg libssh
+aos_bin flytrap
+aos_src trap/*.c
+
+aos_main $@
