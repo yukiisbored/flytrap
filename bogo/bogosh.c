@@ -62,8 +62,8 @@ int main( int argc, char **argv )
 		int ch = fgetc(stdin);
 		if ( ch == '\n' )
 		{
-			dumpcmd();
 			if ( cmdlen ) printf("command not found\n");
+			dumpcmd();
 			printf("# ");
 		}
 		else if ( cmdlen < 2048 )
