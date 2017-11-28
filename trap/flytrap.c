@@ -349,7 +349,7 @@ int main( int argc, char **argv )
 		fprintf(stderr,"failed to daemonize: %s\n",strerror(errno));
 		exit(1);
 	}
-	else if ( pid > 0 )
+	else if ( dpid > 0 )
 		exit(0);
 
 	wlog("started daemon for %s:%d",bindaddr,bindport);
