@@ -41,6 +41,7 @@ void dumpcmd( void )
 {
 	wlog("%s typed: %s",ip,cmdbuf);
 	memset(cmdbuf,0,2048);
+	cmdlen = 0;
 }
 
 int main( int argc, char **argv )
