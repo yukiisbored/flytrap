@@ -4,8 +4,8 @@ be logged.
 
 It's recommended to make a separate user for the Flytrap server for it to drop
 privileges to after binding to port 22 (or any other port chosen in the build
-config). By default everything is logged to /var/log/flytrap.log (will be
-created if it doesn't exist).
+config). By default it expects to be installed in /opt/flytrap. Don't forget to
+generate a RSA host key (default filename is "hostkey.rsa").
 
 Requirements:
  * libssh
