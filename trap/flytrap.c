@@ -29,6 +29,7 @@ char *setuser = FT_DEFUSER;
 char *logpath = FT_DEFLOG;
 char *keypath = FT_DEFKEY;
 char *bogoshpath = FT_DEFBGSH;
+int nodaemon = 0;
 
 void wlog( const char *fmt, ... )
 {
@@ -45,13 +46,6 @@ void wlog( const char *fmt, ... )
 		fprintf(lf,"[%s] flytrap (%d): %s\n",stamp,getpid(),buf);
 		fclose(lf);
 	}
-}
-
-void print_usage( const char *n )
-{
-	fprintf(stderr,"usage: %s [-h] [-p port] [-a address] [-l logpath]"
-		" [-k keypath] [-u setuser] [-b path to bogosh executable]\n",
-		n);
 }
 
 int switch_user( void )
@@ -315,7 +309,7 @@ int main( int argc, char **argv )
 	int opt, npid;
 	ssh_bind s_bind;
 	ssh_session s_session;
-	while ( (opt = getopt(argc,argv,"hp:a:l:k:u:b:")) != -1 )
+	while ( (opt = getopt(argc,argv,"hfp:a:l:k:u:b:")) != -1 )
 	{
 		switch ( opt )
 		{
@@ -337,14 +331,19 @@ int main( int argc, char **argv )
 		case 'b':
 			bogoshpath = optarg;
 			break;
+		case 'f':
+			nodaemon = 1;
+			break;
 		case 'h':
 		default:
-			fprintf(stderr,"usage: %s [-h] [-p port] [-a address]"
-				" [-l logpath] [-k keypath] [-u setuser]"
+			fprintf(stderr,"usage: %s [-h] [-f] [-p port]"
+				" [-a address] [-l logpath] [-k keypath]"
+				" [-u setuser]"
 				" [-b path to bogosh executable]\n",argv[0]);
 			exit(1);
 		}
 	}
+	if ( nodaemon ) goto dont_daemon;
 	int dpid = fork();
 	if ( dpid < 0 )
 	{
@@ -353,7 +352,7 @@ int main( int argc, char **argv )
 	}
 	else if ( dpid > 0 )
 		exit(0);
-
+dont_daemon:
 	signal(SIGCHLD,SIG_IGN);
 	wlog("started daemon for %s:%d",bindaddr,bindport);
 	s_session = ssh_new();
