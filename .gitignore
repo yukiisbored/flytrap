@@ -1,2 +1,5 @@
 bogosh
 flytrap
+*.rsa
+*.rsa.pub
+*.log

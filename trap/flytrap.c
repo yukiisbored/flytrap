@@ -17,6 +17,7 @@
 #include <grp.h>
 #include <poll.h>
 #include <pty.h>
+#include <sys/wait.h>
 #include <libssh/libssh.h>
 #include <libssh/server.h>
 #include <libssh/callbacks.h>
@@ -296,13 +297,14 @@ int trap_fly( ssh_session s )
 		do
 		{
 			ssh_event_dopoll(ev,1000);
-		} while ( !ssh_channel_is_closed(chn) );
+		} while ( !ssh_channel_is_closed(chn)
+			&& !waitpid(shpd,0,WNOHANG) );
 		ssh_event_remove_fd(ev,fd);
 		ssh_event_remove_session(ev,s);
 		ssh_event_free(ev);
 	}
 bail_out:
-	ssh_channel_close(chn);
+	if ( !ssh_channel_is_closed(chn) ) ssh_channel_close(chn);
 	ssh_channel_free(chn);
 	ssh_disconnect(s);
 	return retcode;
@@ -352,6 +354,7 @@ int main( int argc, char **argv )
 	else if ( dpid > 0 )
 		exit(0);
 
+	signal(SIGCHLD,SIG_IGN);
 	wlog("started daemon for %s:%d",bindaddr,bindport);
 	s_session = ssh_new();
 	s_bind = ssh_bind_new();
