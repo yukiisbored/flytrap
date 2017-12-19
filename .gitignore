@@ -1,5 +1,11 @@
-bogosh
-flytrap
-*.rsa
-*.rsa.pub
-*.log
+*
+!.aosbuild
+!.gitignore
+!build-*
+!COPYING
+!progresslog
+!README.md
+!bogo
+!trap
+!**/*.c
+!**/*.h

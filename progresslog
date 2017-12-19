@@ -9,10 +9,14 @@ Flytrap:
 X Start Project
 X SSH server functionality
 X Privilege dropping
+- Flood/DDoS prevention
+- Add more host keys (dsa, ecdsa, ed25519)
+- Configuration file
 
 Bogosh:
 X Start Project
 X Fake prompt skeleton
+  - Add support for random musings/insults
 - Pretend to actually be a shell
   - Fake most standard shell commands
   - Fake some files and programs
