@@ -9,3 +9,4 @@
 !trap
 !**/*.c
 !**/*.h
+!.travis.yml
