@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 source ./.aosbuild
 
 aos_compiler ${CC:-cc}
